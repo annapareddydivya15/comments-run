@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+
+  mongodb:
+    image: mongo:6.0
+    ports:
+      - 27017:27017
+    networks:
+      divya:
+        aliases:
+          - mongodb
+    volumes:
+      - vol-mongo-db:/mongo/db
+      - vol-mongo-configdb:/mongo/configdb
+
+  commnets-ui:
+    image: comments-ui:latest
+    ports:
+      - 3000:80
+    networks:
+      divya:
+  comments-ms:
+    image: comments-ms:latest
+    networks:
+      divya:
+    ports:
+      - 8080:8080
+    environment:
+      - mongodb-port=27017
+      - mongodb-service=mongodb
+      - mongodb-name=comments-db
+
+networks:
+  divya:
+
+volumes:
+  vol-mongo-db:
+  vol-mongo-configdb:
